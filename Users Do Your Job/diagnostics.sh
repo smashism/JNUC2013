@@ -4,15 +4,16 @@
 # Created By: Andrina Kelly, andrina.kelly@bellmedia.ca, Ext 4995
 # Creation Date: April 2013
 # Last modified: April 25th, 2013
+# Updated and updated for Yosemite: 12.11.2014, github.com/smashism/
 # Brief Description: Gather diagnostic logs and submit to support
 ########################################################################
 
 LOGGEDIN=`who | grep console | awk '{print $1}'`
-DEFAULTMAIL=`defaults read /Users/$LOGGEDIN/Library/Preferences/com.apple.LaunchServices.plist | perl -e 'while(<>) {push @lines, $_; m~mailto~ and last} $_ = $lines[-2]; s~[^\"]+\"~~;s~\";~~;print'`
+DEFAULTMAIL=`defaults read /Users/$LOGGEDIN/Library/Preferences/com.apple.LaunchServices/com.apple.launchservices.secure.plist | perl -e 'while(<>) {push @lines, $_; m~mailto~ and last} $_ = $lines[-2]; s~[^\"]+\"~~;s~\";~~;print'`
 COMPUTER=`hostname`
 FILE=`ls -ltr /var/tmp | tail -1 | awk '{print $10}'`
 BOOTDISK=`diskutil info / | grep "Volume Name" | cut -c 30-50`
-CD="/Path/to/CocoaDialog.app/Contents/MacOS/CocoaDialog"
+CD="/Library/Application Support/JAMF/bin/CocoaDialog.app/Contents/MacOS/CocoaDialog"
 
 
 expect <<- DONE
@@ -59,4 +60,3 @@ logger "No suitable mail client found"
 
 exit 0
 fi
-
